@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Event RSVP – Onsite Security Training 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;display:flex;align-items:stretch;justify-content:center;background:#f3f2f1;}
+.screen{display:none;width:100%;}
+.screen.active{display:flex;}
+
+/* ══════════════════════════════════════
+   OUTLOOK SCREEN
+══════════════════════════════════════ */
+#s-outlook{flex-direction:column;min-height:100vh;background:#f3f2f1;}
+
+/* ── Top bar ── */
+.ol-topbar{
+  background:#1f3864;
+  height:48px;padding:0 10px;
+  display:flex;align-items:center;gap:8px;
+  flex-shrink:0;
+}
+.ol-ham{width:36px;height:36px;background:none;border:none;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ol-ham:hover{background:rgba(255,255,255,0.12);}
+.ol-ham svg{display:block;}
+.ol-logo{color:#fff;font-size:15px;font-weight:400;flex-shrink:0;margin-right:4px;}
+.ol-search{
+  flex:1;max-width:400px;
+  height:32px;background:rgba(255,255,255,0.18);
+  border:none;border-radius:4px;
+  display:flex;align-items:center;gap:8px;padding:0 12px;
+  margin:0 auto;
+}
+.ol-search input{background:none;border:none;outline:none;color:#fff;font-size:13px;width:100%;}
+.ol-search input::placeholder{color:rgba(255,255,255,0.65);}
+.ol-search svg{flex-shrink:0;opacity:0.75;}
+.ol-avatar{width:30px;height:30px;border-radius:50%;background:#c8a86b;color:#fff;font-size:12px;font-weight:600;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;}
+
+/* ── Tab row (Home / View / Help) ── */
+.ol-tabs{
+  background:#fff;
+  border-bottom:1px solid #e1dfdd;
+  display:flex;align-items:center;
+  padding:0 0 0 10px;
+  height:36px;
+  flex-shrink:0;
+}
+.ol-tab-toggle{width:36px;height:36px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#323130;border-radius:4px;margin-right:6px;}
+.ol-tab-toggle:hover{background:#f3f2f1;}
+.ol-tab{padding:0 14px;height:36px;line-height:36px;font-size:13px;color:#323130;cursor:pointer;border-bottom:2px solid transparent;display:inline-block;}
+.ol-tab.active{color:#0078d4;border-bottom-color:#0078d4;font-weight:500;}
+.ol-tab:hover:not(.active){background:#f3f2f1;}
+
+/* ── Body row ── */
+.ol-body{display:flex;flex:1;min-height:0;}
+
+/* ── Nav sidebar ── */
+.ol-sidebar{
+  width:200px;flex-shrink:0;
+  background:#fff;border-right:1px solid #e1dfdd;
+  display:flex;flex-direction:column;
+  padding:10px 0;overflow-y:auto;
+}
+.ol-new-wrap{padding:0 10px 12px;}
+.ol-new-btn{
+  width:100%;height:32px;
+  background:#0078d4;color:#fff;
+  border:none;border-radius:3px;
+  font-size:13px;cursor:pointer;
+  display:flex;align-items:center;overflow:hidden;
+}
+.ol-new-main{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 8px;}
+.ol-new-caret{width:26px;height:100%;border-left:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.ol-new-btn:hover{background:#106ebe;}
+
+.ol-nav-group-header{
+  display:flex;align-items:center;gap:5px;
+  padding:9px 12px 3px;
+  font-size:11px;font-weight:600;color:#605e5c;letter-spacing:0.3px;cursor:pointer;
+}
+.ol-nav-group-header svg{opacity:0.7;}
+.ol-nav-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 14px 6px 20px;
+  font-size:13px;color:#323130;cursor:pointer;
+  border-left:2px solid transparent;
+}
+.ol-nav-item:hover{background:#f3f2f1;}
+.ol-nav-item.active{background:#edebe9;border-left-color:#0078d4;color:#0078d4;font-weight:500;}
+.ol-badge{background:#0078d4;color:#fff;border-radius:10px;padding:1px 6px;font-size:11px;font-weight:600;}
+.ol-badge.gray{background:#605e5c;}
+.ol-link{padding:5px 14px 5px 20px;font-size:12px;color:#0078d4;cursor:pointer;}
+.ol-link:hover{text-decoration:underline;}
+
+/* ── Main reading pane ── */
+.ol-main{flex:1;display:flex;flex-direction:column;min-width:0;background:#fff;}
+
+/* Toolbar */
+.ol-toolbar{
+  display:flex;align-items:center;
+  padding:3px 8px;gap:0;
+  border-bottom:1px solid #e1dfdd;
+  flex-shrink:0;
+}
+.tb{background:none;border:none;padding:5px 7px;font-size:12.5px;color:#323130;cursor:pointer;border-radius:3px;white-space:nowrap;display:flex;align-items:center;gap:3px;}
+.tb:hover{background:#f3f2f1;}
+.tb-sep{width:1px;height:20px;background:#e1dfdd;margin:0 3px;}
+.tb-right{margin-left:auto;}
+
+/* Nav bar below toolbar */
+.ol-navrow{
+  display:flex;align-items:center;
+  padding:5px 16px;gap:2px;
+  border-bottom:1px solid #e1dfdd;
+  font-size:13px;flex-shrink:0;
+}
+.nrb{background:none;border:none;padding:4px 7px;font-size:13px;color:#323130;cursor:pointer;border-radius:3px;display:flex;align-items:center;gap:4px;}
+.nrb:hover{background:#f3f2f1;}
+.nr-sep{color:#d8d6d4;margin:0 2px;font-size:14px;}
+.nr-right{margin-left:auto;}
+
+/* Email scroll area */
+.ol-scroll{flex:1;overflow-y:auto;background:#fff;}
+
+/* Email header (subject + sender) */
+.ol-email-hdr{padding:16px 24px 14px;border-bottom:1px solid #e1dfdd;}
+.ol-subject{font-size:20px;font-weight:600;color:#323130;margin-bottom:12px;}
+.ol-sender-row{display:flex;align-items:flex-start;gap:10px;}
+.ol-dot{width:36px;height:36px;border-radius:50%;background:#1a7a38;color:#fff;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ol-sender-info{flex:1;}
+.ol-sname{font-size:13px;font-weight:500;color:#323130;}
+.ol-semail{font-size:12px;color:#605e5c;font-weight:400;}
+.ol-to{font-size:12px;color:#605e5c;margin-top:1px;}
+.ol-actions{display:flex;gap:2px;align-items:flex-start;}
+.ol-act-btn{background:none;border:none;padding:4px 6px;cursor:pointer;color:#605e5c;border-radius:3px;font-size:14px;}
+.ol-act-btn:hover{background:#f3f2f1;}
+.ol-date{font-size:12px;color:#605e5c;white-space:nowrap;padding-top:2px;}
+
+/* Email body wrapper */
+.ol-email-body{
+  padding:20px 0 48px;
+  background:#fff;
+  display:flex;
+  justify-content:center;
+}
+
+/* ════════════════════════════
+   HTML EMAIL TEMPLATE
+════════════════════════════ */
+.em{
+  width:100%;
+  max-width:640px;
+  font-family:'Inter',sans-serif;
+}
+
+/* Banner */
+.em-banner{
+  background:#dce8f7;
+  padding:16px 20px 22px;
+  min-height:158px;
+  display:flex;
+  flex-direction:column;
+}
+.em-logo{
+  display:flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;color:#1457a8;line-height:1.3;
+  flex-shrink:0;
+}
+.em-logo-icon{flex-shrink:0;}
+.em-banner-center{
+  flex:1;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  gap:2px;
+}
+.em-cal{font-size:26px;display:block;line-height:1;margin-bottom:6px;}
+.em-invited{font-size:22px;font-weight:700;color:#111;letter-spacing:-0.2px;}
+.em-event-name{font-size:14px;color:#323130;margin-top:2px;}
+
+/* White body section */
+.em-body{background:#fff;padding:16px 20px 20px;}
+
+.em-greeting{font-size:13px;color:#323130;margin-bottom:8px;}
+.em-tag{
+  background:#e8f0fa;color:#0078d4;
+  border:1px solid #b8d0ef;
+  border-radius:3px;padding:1px 5px;
+  font-size:12px;font-family:monospace;
+}
+.em-copy{font-size:13px;color:#605e5c;line-height:1.65;margin-bottom:16px;}
+
+/* Event card */
+.em-card{border:1px solid #e1dfdd;border-radius:3px;overflow:hidden;margin-bottom:16px;}
+.em-card-row{display:flex;}
+
+.em-photo{width:125px;flex-shrink:0;overflow:hidden;background:#c0a060;}
+.em-photo svg{display:block;}
+
+.em-info{padding:11px 13px;flex:1;}
+.em-info-title{font-size:14px;font-weight:700;color:#323130;margin-bottom:5px;}
+.em-info-desc{font-size:12px;color:#605e5c;line-height:1.5;margin-bottom:9px;}
+.em-lbl{font-size:12px;font-weight:700;color:#323130;margin-bottom:1px;}
+.em-val{font-size:12px;color:#605e5c;margin-bottom:8px;line-height:1.4;}
+
+.em-btns{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  border-top:1px solid #e1dfdd;
+}
+.em-btn-reg{
+  background:#0f6cbd;color:#fff;
+  border:none;border-radius:4px;
+  padding:7px 20px;font-size:13px;font-weight:500;
+  font-family:'Inter',sans-serif;
+  cursor:pointer;transition:background 0.15s;
+}
+.em-btn-reg:hover{background:#0a5ba8;}
+.em-btn-ics{
+  background:#fff;border:1px solid #c8c6c4;border-radius:4px;
+  padding:7px 12px;font-size:12.5px;color:#323130;
+  font-family:'Inter',sans-serif;cursor:pointer;
+}
+.em-btn-ics:hover{background:#f3f2f1;}
+
+.em-footer{font-size:13px;color:#605e5c;line-height:1.65;margin-bottom:10px;}
+.em-sign{font-size:13px;color:#323130;}
+
+/* ══════════════════════════════════════
+   BROWSER / RSVP SCREEN
+══════════════════════════════════════ */
+#s-rsvp{flex-direction:column;min-height:100vh;background:#f3f2f1;}
+
+.browser-chrome{background:#3a3a3a;display:flex;align-items:center;padding:8px 14px;gap:10px;flex-shrink:0;}
+.bdots{display:flex;gap:6px;}
+.bdot{width:12px;height:12px;border-radius:50%;}
+.bdot.r{background:#ff5f57;}.bdot.y{background:#ffbd2e;}.bdot.g{background:#28c840;}
+.bnav{display:flex;gap:4px;}
+.bnav-btn{background:none;border:none;color:rgba(255,255,255,0.55);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;}
+.bnav-btn:hover{color:#fff;}
+.burl{flex:1;background:#fff;border-radius:5px;padding:5px 12px;display:flex;align-items:center;gap:6px;}
+.burl-lock{color:#34c759;font-size:11px;}
+.burl-text{font-size:12px;color:#444;}
+.bacts{display:flex;gap:6px;margin-left:auto;}
+.bact{background:none;border:none;color:rgba(255,255,255,0.55);cursor:pointer;font-size:15px;}
+
+.browser-body{flex:1;background:#f0f0f5;display:flex;align-items:center;justify-content:center;padding:48px 16px;}
+
+.rsvp-card{background:#fff;border-radius:18px;padding:40px 44px;width:100%;max-width:500px;box-shadow:0 4px 32px rgba(0,0,0,0.08);}
+.rsvp-title{font-size:22px;font-weight:700;color:#111;margin-bottom:24px;letter-spacing:-0.3px;}
+.mrow{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
+.micon{width:40px;height:40px;flex-shrink:0;margin-top:1px;}
+.mlbl{font-size:14px;font-weight:600;color:#111;margin-bottom:2px;}
+.mval{font-size:14px;color:#555;line-height:1.5;}
+.question{font-size:14px;font-weight:600;color:#111;margin:24px 0 12px;}
+.options{display:flex;gap:8px;margin-bottom:28px;align-items:center;}
+.opt{display:flex;align-items:center;gap:8px;padding:0 16px 0 12px;height:42px;border:1.5px solid #E2E2E4;border-radius:6px;cursor:pointer;font-size:14px;font-weight:500;color:#171719;user-select:none;transition:border-color 0.15s,background 0.15s;background:#fff;}
+.opt:not(.selected):hover{background:#F3F3F4;}
+.opt.selected{border-color:#006CFF;background:#ECF4FF;}
+.rring{width:16px;height:16px;border-radius:50%;border:1.5px solid #74747B;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;background:#fff;}
+.opt.selected .rring{border:none;background:#006CFF;}
+.rdot{width:8px;height:8px;border-radius:50%;background:#fff;display:none;}
+.opt.selected .rdot{display:block;}
+.btn-submit{background:#006CFF;color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:15px;font-weight:600;cursor:pointer;transition:background 0.15s,opacity 0.15s;}
+.btn-submit:hover:not(:disabled){background:#0058d6;}
+.btn-submit:disabled{opacity:0.4;cursor:default;}
+#rsvp-form{transition:opacity 0.22s ease;}
+#rsvp-form.out{opacity:0;pointer-events:none;}
+
+#confirm-state{display:none;text-align:center;padding:8px 0;}
+.conf-icon-wrap{margin:0 auto 24px;display:flex;justify-content:center;align-items:center;}
+.ct{font-size:22px;font-weight:700;color:#111;margin-bottom:8px;opacity:0;}
+.cs{font-size:14px;color:#555;line-height:1.65;margin:0 40px 24px;opacity:0;}
+.btn-cal{background:#006CFF;color:#fff;border:none;border-radius:8px;padding:11px 26px;font-size:14px;font-weight:600;cursor:pointer;opacity:0;transition:background 0.15s;display:inline-block;margin-bottom:10px;}
+.btn-cal:hover{background:#0058d6;}
+.btn-update{background:none;border:none;color:#006CFF;font-size:14px;font-weight:500;cursor:pointer;opacity:0;display:block;padding:4px 0;margin:0 auto;}
+.btn-update:hover{text-decoration:underline;}
+.btn-update-solid{background:#006CFF;color:#fff;border:none;border-radius:8px;padding:11px 26px;font-size:14px;font-weight:600;cursor:pointer;opacity:0;transition:background 0.15s;display:inline-block;}
+.btn-update-solid:hover{background:#0058d6;}
+
+@keyframes yes-pop{0%{transform:scale(0.4);opacity:0;}65%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+@keyframes badge-spring{0%{transform:scale(0);opacity:0;}55%{transform:scale(1.1);opacity:1;}78%{transform:scale(0.96);}100%{transform:scale(1);opacity:1;}}
+@keyframes check-draw{from{stroke-dashoffset:60;}to{stroke-dashoffset:0;}}
+@keyframes sparkle-pop{0%{opacity:0;}100%{opacity:1;}}
+@keyframes fade-up{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.anim-run .yes-icon{animation:yes-pop 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.05s both;}
+.anim-run .cal-icon{animation:yes-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) 0.05s both;}
+.badge-pop{transform-box:fill-box;transform-origin:center;}
+.anim-run .badge-pop{animation:badge-spring 0.8s cubic-bezier(0.25,1.2,0.5,1) 0.3s both;}
+.anim-run .anim-check{animation:check-draw 0.4s ease 0.3s both;}
+.anim-run .sp-el{animation:sparkle-pop 0.4s ease var(--sp-delay,0.4s) both;}
+.anim-run .ct{animation:fade-up 0.3s ease 0.5s both;}
+.anim-run .cs{animation:fade-up 0.3s ease 0.6s both;}
+.anim-run .btn-cal{animation:fade-up 0.3s ease 0.7s both;}
+.anim-run .btn-update{animation:fade-up 0.3s ease 0.78s both;}
+.anim-run .btn-update-solid{animation:fade-up 0.3s ease 0.7s both;}
+.anim-check{stroke-dasharray:60;stroke-dashoffset:60;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     SCREEN 1: OUTLOOK
+═══════════════════════════════ -->
+<div id="s-outlook" class="screen active">
+
+  <!-- Top bar -->
+  <div class="ol-topbar">
+    <button class="ol-ham">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M0 1h16M0 6h16M0 11h16" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <span class="ol-logo">Outlook</span>
+    <div class="ol-search">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="rgba(255,255,255,0.8)" stroke-width="1.3"/><path d="M9 9l3 3" stroke="rgba(255,255,255,0.8)" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Search" readonly/>
+    </div>
+    <button class="ol-avatar">JS</button>
+  </div>
+
+  <!-- Tab row -->
+  <div class="ol-tabs">
+    <button class="ol-tab-toggle">
+      <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M0 1h16M0 7h16M0 13h16" stroke="#323130" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </button>
+    <span class="ol-tab active">Home</span>
+    <span class="ol-tab">View</span>
+    <span class="ol-tab">Help</span>
+  </div>
+
+  <!-- Body -->
+  <div class="ol-body">
+
+    <!-- Nav sidebar -->
+    <div class="ol-sidebar">
+      <div class="ol-new-wrap">
+        <button class="ol-new-btn">
+          <span class="ol-new-main">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v9M1 5.5h9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+            New email
+          </span>
+          <span class="ol-new-caret">▾</span>
+        </button>
+      </div>
+
+      <div class="ol-nav-group-header">
+        <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 1.5l4 4 4-4" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Favourites
+      </div>
+      <div class="ol-nav-item active"><span>Inbox</span><span class="ol-badge">2</span></div>
+      <div class="ol-nav-item">Sent Items</div>
+      <div class="ol-nav-item"><span>Drafts</span><span class="ol-badge gray">2</span></div>
+      <div class="ol-link">Add favourite</div>
+
+      <div class="ol-nav-group-header" style="margin-top:4px;">
+        <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 1.5l4 4 4-4" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Folders
+      </div>
+      <div class="ol-nav-item">Inbox</div>
+      <div class="ol-nav-item">Junk Email</div>
+      <div class="ol-nav-item"><span>Drafts</span><span class="ol-badge gray">2</span></div>
+      <div class="ol-nav-item">Sent Items</div>
+      <div class="ol-nav-item">Deleted Items</div>
+      <div class="ol-nav-item">Archive</div>
+      <div class="ol-nav-item">Notes</div>
+      <div class="ol-nav-item">Conversatio...</div>
+      <div class="ol-link">Create new fol...</div>
+
+      <div class="ol-nav-group-header" style="margin-top:4px;">
+        <svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 1.5l4 4 4-4" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Groups
+      </div>
+      <div class="ol-link">New group</div>
+    </div>
+
+    <!-- Reading pane -->
+    <div class="ol-main">
+
+      <!-- Toolbar -->
+      <div class="ol-toolbar">
+        <button class="tb">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="#323130" stroke-width="1.2"/><path d="M3 4h6M3 6.5h4" stroke="#323130" stroke-width="1.1" stroke-linecap="round"/></svg>
+          Delete ▾
+        </button>
+        <button class="tb">Archive</button>
+        <button class="tb">Report</button>
+        <button class="tb">Sweep</button>
+        <button class="tb">Move to ▾</button>
+        <div class="tb-sep"></div>
+        <button class="tb">
+          <svg width="13" height="11" viewBox="0 0 13 11" fill="none"><path d="M11 5H2M2 5L5.5 1.5M2 5L5.5 8.5" stroke="#323130" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Reply ▾
+        </button>
+        <div class="tb-sep"></div>
+        <button class="tb">Read / Unread</button>
+        <button class="tb">
+          <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><path d="M2 1h8l1 3H1L2 1zM1 4v8a1 1 0 001 1h8a1 1 0 001-1V4" stroke="#323130" stroke-width="1.1"/><path d="M4 7v4M6 7v4M8 7v4" stroke="#323130" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </button>
+        <button class="tb">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8.2 5H12L9 7.6l1.1 3.9L6.5 9.2 3 11.5l1.1-3.9L1 5h3.8z" stroke="#323130" stroke-width="1.1" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="tb">
+          <svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M4 5.5h6M7 1v9" stroke="#323130" stroke-width="1.2" stroke-linecap="round"/><rect x="1" y="1" width="12" height="9" rx="1.5" stroke="#323130" stroke-width="1.1"/></svg>
+        </button>
+        <button class="tb">
+          <svg width="12" height="13" viewBox="0 0 12 13" fill="none"><circle cx="6" cy="5" r="4" stroke="#323130" stroke-width="1.1"/><path d="M6 9v3M4 12h4" stroke="#323130" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </button>
+        <button class="tb tb-right">
+          <svg width="14" height="13" viewBox="0 0 14 13" fill="none"><path d="M2 6.5C2 3.46 4.46 1 7.5 1S13 3.46 13 6.5 10.54 12 7.5 12H2M2 6.5L4.5 4M2 6.5L4.5 9" stroke="#323130" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="tb">···</button>
+      </div>
+
+      <!-- Nav row -->
+      <div class="ol-navrow">
+        <button class="nrb">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M9 5H1M1 5L4 2M1 5L4 8" stroke="#323130" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Close
+        </button>
+        <span class="nr-sep">|</span>
+        <button class="nrb">Previous</button>
+        <button class="nrb">Next</button>
+        <button class="nrb nr-right">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="#323130" stroke-width="1.2"/><path d="M4.5 7h5M7 4.5v5" stroke="#323130" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+
+      <!-- Email scroll -->
+      <div class="ol-scroll">
+
+        <!-- Subject + sender -->
+        <div class="ol-email-hdr">
+          <div class="ol-subject">You're invited to onsite security training!</div>
+          <div class="ol-sender-row">
+            <div class="ol-dot">S</div>
+            <div class="ol-sender-info">
+              <div class="ol-sname">Sender <span class="ol-semail">&lt;emails@sender.com&gt;</span></div>
+              <div class="ol-to">To: You</div>
+            </div>
+            <div class="ol-actions">
+              <button class="ol-act-btn" title="Reply">
+                <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M5.5 1L1 5.5l4.5 4.5M1 5.5h9a4 4 0 010 8" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="ol-act-btn" title="Reply all">
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M7.5 1L3 5.5l4.5 4.5M3 5.5h9a4 4 0 010 8M5 3L2 5.5l3 2.5" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="ol-act-btn" title="Forward">
+                <svg width="15" height="12" viewBox="0 0 15 12" fill="none"><path d="M9.5 1L14 5.5 9.5 10M14 5.5H5a4 4 0 000 8" stroke="#605e5c" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="ol-act-btn" title="More">···</button>
+            </div>
+            <div class="ol-date">Thu 26/01/2023 05:26</div>
+          </div>
+        </div>
+
+        <!-- HTML email body -->
+        <div class="ol-email-body">
+          <div class="em">
+
+            <!-- ── Email: Header banner ── -->
+            <div style="background:#e8f0fb;padding:32px 24px 28px;text-align:center;">
+              <!-- Vandelay logo top-left -->
+              <div style="text-align:left;margin-bottom:20px;">
+                <span style="display:inline-flex;align-items:center;gap:8px;">
+                  <!-- Vandelay Industries logo SVG -->
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="20" cy="20" r="20" fill="#1a56db"/>
+                    <!-- Longitude curves (vertical) -->
+                    <path d="M20 2 C13 8 11 14 14 23 C16 28 18 33 20 38" stroke="white" stroke-width="2" fill="none"/>
+                    <path d="M20 2 C27 8 29 14 26 23 C24 28 22 33 20 38" stroke="white" stroke-width="2" fill="none"/>
+                    <!-- Latitude curves (horizontal) -->
+                    <path d="M3 14 C8 17 14 18 20 18 C26 18 32 17 37 14" stroke="white" stroke-width="2" fill="none"/>
+                    <path d="M3 26 C8 23 14 22 20 22 C26 22 32 23 37 26" stroke="white" stroke-width="2" fill="none"/>
+                    <!-- Equator -->
+                    <path d="M2 20 C7 20 13 20 20 20 C27 20 33 20 38 20" stroke="white" stroke-width="2" fill="none"/>
+                  </svg>
+                  <span style="font-size:14px;font-weight:700;color:#1a56db;line-height:1.2;">Vandelay<br>Industries</span>
+                </span>
+              </div>
+              <!-- Calendar icon -->
+              <div style="font-size:40px;margin-bottom:12px;">📅</div>
+              <div style="font-size:24px;font-weight:700;color:#111;margin-bottom:6px;">You're Invited</div>
+              <div style="font-size:20px;font-weight:400;color:#111;">Onsite Security Training 2026</div>
+            </div>
+
+            <!-- ── Email: Body text ── -->
+            <div style="padding:28px 24px 0;color:#111;font-size:14px;line-height:1.6;">
+              <p style="margin-bottom:16px;">Hey <span style="background:#e8e8e8;border-radius:4px;padding:1px 7px;font-size:13px;">{{firstName}}</span> !</p>
+              <p style="margin-bottom:24px;">We'd love for you to join our next Onsite Security Training 2026. It's a chance to hear the latest updates, get a preview of what's ahead, and connect with the wider team during the live Q&amp;A.</p>
+            </div>
+
+            <!-- ── Email: Event card ── -->
+            <div style="margin:0 24px 24px;border:1px solid #dde3ee;border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:16px;">
+              <!-- Top row: image + details side by side -->
+              <div style="display:flex;gap:16px;align-items:flex-start;">
+                <!-- Photo: small, top-left -->
+                <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=240&h=200&fit=crop&crop=faces,center"
+                     style="width:120px;height:100px;object-fit:cover;border-radius:6px;flex-shrink:0;display:block;" alt=""/>
+                <!-- Details -->
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:17px;font-weight:700;color:#111;margin-bottom:6px;">Onsite Security Training 2026</div>
+                  <div style="font-size:13px;color:#555;line-height:1.55;margin-bottom:12px;">Join colleagues across the company for an online all-hands featuring key updates, a look ahead, and time for Q&amp;A.</div>
+                  <div style="margin-bottom:8px;">
+                    <span style="font-size:13px;font-weight:700;color:#111;">When</span><br>
+                    <span style="font-size:13px;color:#555;">July 22, 4:00 pm to 5:00 pm</span>
+                  </div>
+                  <div>
+                    <span style="font-size:13px;font-weight:700;color:#111;">Location</span><br>
+                    <span style="font-size:13px;color:#555;">HQ Training Center (Building B), Industriestraße 12, 14195 Berlin, Germany.</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Buttons: always side by side -->
+              <div style="display:flex;gap:10px;align-items:center;border-top:1px solid #eee;padding-top:16px;">
+                <button onclick="goRSVP()" style="background:#1a56db;color:#fff;border:none;border-radius:6px;padding:10px 22px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">Register</button>
+                <button style="background:#f2f2f2;color:#111;border:1px solid #ddd;border-radius:6px;padding:10px 18px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;">Download Calendar File (.ics)</button>
+              </div>
+            </div>
+
+            <!-- ── Email: Footer text ── -->
+            <div style="padding:0 24px 32px;color:#111;font-size:14px;line-height:1.6;">
+              <p style="margin-bottom:16px;">Please RSVP using the button above to confirm your attendance. If you have any questions, feel free to reach out.</p>
+              <p>Warm regards,<br>The Internal Communications Team</p>
+            </div>
+
+          </div><!-- /em -->
+        </div><!-- /ol-email-body -->
+      </div><!-- /ol-scroll -->
+    </div><!-- /ol-main -->
+  </div><!-- /ol-body -->
+</div><!-- /s-outlook -->
+
+
+<!-- ═══════════════════════════════
+     SCREEN 2: BROWSER / RSVP
+═══════════════════════════════ -->
+<div id="s-rsvp" class="screen">
+  <div class="browser-chrome">
+    <div class="bdots"><div class="bdot r"></div><div class="bdot y"></div><div class="bdot g"></div></div>
+    <div class="bnav"><button class="bnav-btn">‹</button><button class="bnav-btn">›</button></div>
+    <div class="burl">
+      <span class="burl-lock">🔒</span>
+      <span class="burl-text">vandelay.staffbase.com/events/security-training-2026/rsvp</span>
+    </div>
+    <div class="bacts">
+      <button class="bact">⬇</button><button class="bact">⬆</button>
+      <button class="bact">+</button><button class="bact">⊞</button>
+    </div>
+  </div>
+
+  <div class="browser-body">
+    <div style="width:100%;max-width:500px;">
+      <div class="rsvp-card">
+        <div id="rsvp-form">
+          <div class="rsvp-title">Onsite Security Training 2026</div>
+          <div class="mrow">
+            <div class="micon">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="10" fill="#F3F3F4"/>
+<g clip-path="url(#clip0_10752_105708)"><path d="M26.332 14H24.4987C24.4545 14 24.4121 13.9824 24.3808 13.9512C24.3496 13.9199 24.332 13.8775 24.332 13.8333V12.6667C24.332 12.4899 24.2618 12.3203 24.1368 12.1953C24.0117 12.0702 23.8422 12 23.6654 12C23.4886 12 23.319 12.0702 23.194 12.1953C23.0689 12.3203 22.9987 12.4899 22.9987 12.6667V15.8333C22.9987 15.9659 22.946 16.0931 22.8523 16.1869C22.7585 16.2807 22.6313 16.3333 22.4987 16.3333C22.3661 16.3333 22.2389 16.2807 22.1451 16.1869C22.0514 16.0931 21.9987 15.9659 21.9987 15.8333V14.3333C21.9987 14.2449 21.9636 14.1601 21.9011 14.0976C21.8386 14.0351 21.7538 14 21.6654 14H17.4987C17.4546 14 17.4123 13.9825 17.3811 13.9514C17.3498 13.9203 17.3322 13.8781 17.332 13.834V12.6667C17.332 12.4899 17.2618 12.3203 17.1368 12.1953C17.0117 12.0702 16.8422 12 16.6654 12C16.4886 12 16.319 12.0702 16.194 12.1953C16.0689 12.3203 15.9987 12.4899 15.9987 12.6667V15.8333C15.9987 15.9659 15.946 16.0931 15.8523 16.1869C15.7585 16.2807 15.6313 16.3333 15.4987 16.3333C15.3661 16.3333 15.2389 16.2807 15.1451 16.1869C15.0514 16.0931 14.9987 15.9659 14.9987 15.8333V14.3333C14.9987 14.2449 14.9636 14.1601 14.9011 14.0976C14.8386 14.0351 14.7538 14 14.6654 14H13.6654C13.3117 14 12.9726 14.1405 12.7226 14.3905C12.4725 14.6406 12.332 14.9797 12.332 15.3333V26.6667C12.332 27.0203 12.4725 27.3594 12.7226 27.6095C12.9726 27.8595 13.3117 28 13.6654 28H26.332C26.6857 28 27.0248 27.8595 27.2748 27.6095C27.5249 27.3594 27.6654 27.0203 27.6654 26.6667V15.3333C27.6654 14.9797 27.5249 14.6406 27.2748 14.3905C27.0248 14.1405 26.6857 14 26.332 14ZM25.9987 26.6667H13.9987C13.9103 26.6667 13.8255 26.6315 13.763 26.569C13.7005 26.5065 13.6654 26.4217 13.6654 26.3333V18.3333C13.6654 18.2449 13.7005 18.1601 13.763 18.0976C13.8255 18.0351 13.9103 18 13.9987 18H25.9987C26.0871 18 26.1719 18.0351 26.2344 18.0976C26.2969 18.1601 26.332 18.2449 26.332 18.3333V26.3333C26.332 26.4217 26.2969 26.5065 26.2344 26.569C26.1719 26.6315 26.0871 26.6667 25.9987 26.6667Z" fill="#74747B"/></g>
+<defs><clipPath id="clip0_10752_105708"><rect width="16" height="16" fill="white" transform="translate(12 12)"/></clipPath></defs>
+</svg>
+            </div>
+            <div><div class="mlbl">When</div><div class="mval">July 22, 4:00 pm to 5:00 pm</div></div>
+          </div>
+          <div class="mrow">
+            <div class="micon">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="10" fill="#F3F3F4"/>
+<path d="M20.0013 12C18.5868 12 17.2303 12.5619 16.2301 13.5621C15.2299 14.5623 14.668 15.9188 14.668 17.3333C14.668 19.6733 18.0013 25.3333 19.4346 27.68C19.4944 27.7765 19.5779 27.8561 19.677 27.9113C19.7762 27.9665 19.8878 27.9955 20.0013 27.9955C20.1148 27.9955 20.2264 27.9665 20.3256 27.9113C20.4248 27.8561 20.5082 27.7765 20.568 27.68C22.0013 25.3333 25.3346 19.6733 25.3346 17.3333C25.3346 15.9188 24.7727 14.5623 23.7725 13.5621C22.7723 12.5619 21.4158 12 20.0013 12V12ZM20.0013 19.6667C19.5398 19.6667 19.0887 19.5298 18.705 19.2734C18.3213 19.017 18.0222 18.6526 17.8456 18.2263C17.669 17.7999 17.6228 17.3307 17.7128 16.8781C17.8028 16.4255 18.0251 16.0097 18.3514 15.6834C18.6777 15.3571 19.0935 15.1349 19.5461 15.0448C19.9987 14.9548 20.4679 15.001 20.8942 15.1776C21.3206 15.3542 21.685 15.6533 21.9414 16.037C22.1978 16.4207 22.3346 16.8718 22.3346 17.3333C22.3346 17.9522 22.0888 18.5457 21.6512 18.9832C21.2136 19.4208 20.6201 19.6667 20.0013 19.6667Z" fill="#74747B"/>
+</svg>
+            </div>
+            <div><div class="mlbl">Location</div><div class="mval">HQ Training Center (Building B), Industriestraße 12, 14195 Berlin, Germany.</div></div>
+          </div>
+          <div class="question">Will you be attending?</div>
+          <div class="options">
+            <div class="opt" id="opt-yes" onclick="pick('yes')"><div class="rring"><div class="rdot"></div></div> Yes</div>
+            <div class="opt" id="opt-maybe" onclick="pick('maybe')"><div class="rring"><div class="rdot"></div></div> Maybe</div>
+            <div class="opt" id="opt-no" onclick="pick('no')"><div class="rring"><div class="rdot"></div></div> No</div>
+          </div>
+          <button class="btn-submit" id="submit-btn" disabled onclick="submitRSVP()">Submit</button>
+        </div>
+
+        <div id="confirm-state">
+          <div class="conf-icon-wrap" id="conf-icon-wrap"></div>
+          <div class="ct" id="confirm-title"></div>
+          <div class="cs" id="confirm-subtitle"></div>
+          <div id="confirm-actions"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var chosen=null;
+
+var icons={
+  yes:`<svg class="yes-icon" width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M116.002 57.0804C116.002 92.9078 96.145 119.003 64.0731 119.003C32.0013 119.003 6.46867 97.9405 6.00187 64.8857C5.52878 31.3858 34.2136 7.52304 64.0731 9.00269C90.3496 10.3048 116.002 21.253 116.002 57.0804Z" fill="#ECF4FF"/>
+<circle cx="64.5" cy="64.5" r="42.5" fill="#2883FF"/>
+<circle cx="63.9068" cy="63.9068" r="35.1724" fill="white"/>
+<rect x="80.8633" y="46.0078" width="8.25603" height="41.7834" rx="4.12802" transform="rotate(41.4758 80.8633 46.0078)" fill="#2883FF"/>
+<rect x="43" y="68.3125" width="8.25603" height="21.84" rx="4.12802" transform="rotate(-48.5242 43 68.3125)" fill="#2883FF"/>
+<g class="sp-el" style="--sp-delay:0.35s">
+  <ellipse cx="24.3098" cy="21" rx="0.923077" ry="8" fill="#2883FF"/>
+  <ellipse cx="24" cy="20.6941" rx="0.923077" ry="8" transform="rotate(-90 24 20.6941)" fill="#2883FF"/>
+</g>
+<g class="sp-el" style="--sp-delay:0.45s">
+  <ellipse cx="117.231" cy="46.75" rx="0.692308" ry="6" fill="#2883FF"/>
+  <ellipse cx="117" cy="46.5186" rx="0.692307" ry="6" transform="rotate(-90 117 46.5186)" fill="#2883FF"/>
+</g>
+<g class="sp-el" style="--sp-delay:0.53s">
+  <ellipse cx="105.231" cy="26.5" rx="0.692308" ry="6" fill="#2883FF"/>
+  <ellipse cx="105" cy="26.2686" rx="0.692307" ry="6" transform="rotate(-90 105 26.2686)" fill="#2883FF"/>
+</g>
+</svg>`,
+
+  maybe:`<svg class="cal-icon" width="123" height="125" viewBox="0 0 123 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M58.8654 106.156C80.2805 106.059 99.0486 93.467 106.758 73.8641C116.165 49.9426 120.352 19.1653 98.7515 4.73286C78.1021 -9.06432 53.8944 10.2207 34.3413 25.4782C18.3112 37.9867 3.7402 55.0465 9.59398 74.3038C15.8088 94.7486 37.1209 106.254 58.8654 106.156Z" fill="#ECF4FF"/>
+<g filter="url(#fm0)">
+<path d="M95.4687 13.9062C72.7743 13.9062 50.0799 13.9062 27.3854 13.9062C25.4847 13.9063 23.6618 14.6613 22.3178 16.0053C20.9738 17.3493 20.2188 19.1722 20.2188 21.0729V81.9896C20.2188 83.8903 20.9738 85.7132 22.3178 87.0572C23.6618 88.4012 25.4847 89.1562 27.3854 89.1562H95.4687C97.3695 89.1562 99.1923 88.4012 100.536 87.0572C101.88 85.7132 102.635 83.8903 102.635 81.9896V21.0729C102.635 19.1722 101.88 17.3493 100.536 16.0053C99.1923 14.6613 97.3695 13.9063 95.4687 13.9062Z" fill="white"/>
+</g>
+<path d="M95.4688 13.9062C97.3693 13.9063 99.1922 14.6611 100.536 16.0049C101.88 17.3489 102.636 19.1725 102.636 21.0732V33.8701H20.2188V21.0732C20.2188 19.1725 20.9734 17.3489 22.3174 16.0049C23.6614 14.6609 25.485 13.9063 27.3857 13.9062H95.4688Z" fill="#85B9FF"/>
+<ellipse cx="41.4598" cy="24.6574" rx="7.67857" ry="3.07143" fill="#ECF4FF"/>
+<ellipse cx="81.3895" cy="24.6574" rx="7.67857" ry="3.07143" fill="#ECF4FF"/>
+<g filter="url(#fm1)">
+<path d="M36.8555 10.8337C36.8555 8.28925 38.9182 6.22656 41.4626 6.22656C44.0071 6.22656 46.0698 8.28925 46.0698 10.8337V24.6551H36.8555V10.8337Z" fill="#2883FF"/>
+</g>
+<g filter="url(#fm2)">
+<path d="M76.7812 10.8337C76.7812 8.28925 78.8439 6.22656 81.3884 6.22656C83.9328 6.22656 85.9955 8.28925 85.9955 10.8337V24.6551H76.7812V10.8337Z" fill="#2883FF"/>
+</g>
+<rect x="27.6406" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="52.2109" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="76.7812" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="27.6406" y="64.5859" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="52.2109" y="64.5859" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<g class="badge-pop">
+<path d="M89.3516 95.2188C102.076 95.2188 112.391 84.9038 112.391 72.1797C112.391 59.4556 102.076 49.1406 89.3516 49.1406C76.6274 49.1406 66.3125 59.4556 66.3125 72.1797C66.3125 84.9038 76.6274 95.2188 89.3516 95.2188Z" fill="#2883FF"/>
+<path d="M89.3522 90.7201C99.5936 90.7201 107.896 82.4178 107.896 72.1764C107.896 61.9351 99.5936 53.6328 89.3522 53.6328C79.1109 53.6328 70.8086 61.9351 70.8086 72.1764C70.8086 82.4178 79.1109 90.7201 89.3522 90.7201Z" fill="white"/>
+<path d="M98.393 70.1172H80.765C79.499 70.1172 78.4727 71.1435 78.4727 72.4095C78.4727 73.6756 79.499 74.7019 80.765 74.7019H98.393C99.659 74.7019 100.685 73.6756 100.685 72.4095C100.685 71.1435 99.659 70.1172 98.393 70.1172Z" fill="#2883FF"/>
+</g>
+<defs>
+<filter id="fm0" x="0.747049" y="10.661" width="121.361" height="114.193" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="6.49057" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="6.49057"/><feGaussianBlur stdDeviation="4.86793"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="4.86793" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="16.2264"/><feGaussianBlur stdDeviation="12.1698"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+<filter id="fm1" x="-0.00167179" y="0.0837088" width="82.9291" height="92.144" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="12.2857" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="12.2857"/><feGaussianBlur stdDeviation="9.21429"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="9.21429" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="30.7143"/><feGaussianBlur stdDeviation="23.0357"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+<filter id="fm2" x="39.9241" y="0.0837088" width="82.9291" height="92.144" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="12.2857" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="12.2857"/><feGaussianBlur stdDeviation="9.21429"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="9.21429" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="30.7143"/><feGaussianBlur stdDeviation="23.0357"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+</defs>
+</svg>`,
+
+  no:`<svg class="cal-icon" width="123" height="125" viewBox="0 0 123 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M58.8654 106.156C80.2805 106.059 99.0486 93.467 106.758 73.8641C116.165 49.9426 120.352 19.1653 98.7515 4.73286C78.1021 -9.06432 53.8944 10.2207 34.3413 25.4782C18.3112 37.9867 3.7402 55.0465 9.59398 74.3038C15.8088 94.7486 37.1209 106.254 58.8654 106.156Z" fill="#ECF4FF"/>
+<g filter="url(#fn0)">
+<path d="M95.4687 13.9062C72.7743 13.9062 50.0799 13.9062 27.3854 13.9062C25.4847 13.9063 23.6618 14.6613 22.3178 16.0053C20.9738 17.3493 20.2188 19.1722 20.2188 21.0729V81.9896C20.2188 83.8903 20.9738 85.7132 22.3178 87.0572C23.6618 88.4012 25.4847 89.1562 27.3854 89.1562H95.4687C97.3695 89.1562 99.1923 88.4012 100.536 87.0572C101.88 85.7132 102.635 83.8903 102.635 81.9896V21.0729C102.635 19.1722 101.88 17.3493 100.536 16.0053C99.1923 14.6613 97.3695 13.9063 95.4687 13.9062Z" fill="white"/>
+</g>
+<path d="M95.4688 13.9062C97.3693 13.9063 99.1922 14.6611 100.536 16.0049C101.88 17.3489 102.636 19.1725 102.636 21.0732V33.8701H20.2188V21.0732C20.2188 19.1725 20.9734 17.3489 22.3174 16.0049C23.6614 14.6609 25.485 13.9063 27.3857 13.9062H95.4688Z" fill="#85B9FF"/>
+<ellipse cx="41.4598" cy="24.6574" rx="7.67857" ry="3.07143" fill="#ECF4FF"/>
+<ellipse cx="81.3895" cy="24.6574" rx="7.67857" ry="3.07143" fill="#ECF4FF"/>
+<g filter="url(#fn1)">
+<path d="M36.8555 10.8337C36.8555 8.28925 38.9182 6.22656 41.4626 6.22656C44.0071 6.22656 46.0698 8.28925 46.0698 10.8337V24.6551H36.8555V10.8337Z" fill="#2883FF"/>
+</g>
+<g filter="url(#fn2)">
+<path d="M76.7812 10.8337C76.7812 8.28925 78.8439 6.22656 81.3884 6.22656C83.9328 6.22656 85.9955 8.28925 85.9955 10.8337V24.6551H76.7812V10.8337Z" fill="#2883FF"/>
+</g>
+<rect x="27.6406" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="52.2109" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="76.7812" y="40.0156" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="27.6406" y="64.5859" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<rect x="52.2109" y="64.5859" width="18.4286" height="18.4286" rx="3.07143" fill="#D0E4FF"/>
+<g class="badge-pop">
+<path d="M89.3438 95.2188C102.068 95.2188 112.383 84.9038 112.383 72.1797C112.383 59.4556 102.068 49.1406 89.3438 49.1406C76.6196 49.1406 66.3047 59.4556 66.3047 72.1797C66.3047 84.9038 76.6196 95.2188 89.3438 95.2188Z" fill="#2883FF"/>
+<path d="M89.3444 90.7201C99.5858 90.7201 107.888 82.4178 107.888 72.1764C107.888 61.9351 99.5858 53.6328 89.3444 53.6328C79.1031 53.6328 70.8008 61.9351 70.8008 72.1764C70.8008 82.4178 79.1031 90.7201 89.3444 90.7201Z" fill="white"/>
+<path d="M96.8602 67.3073C97.6805 66.487 97.6805 65.1571 96.8602 64.3368C96.04 63.5165 94.71 63.5165 93.8898 64.3368L81.8269 76.3997C81.0066 77.22 81.0066 78.5499 81.8269 79.3702C82.6471 80.1904 83.9771 80.1904 84.7973 79.3702L96.8602 67.3073Z" fill="#2883FF"/>
+<path d="M84.7995 64.3429C83.9792 63.5226 82.6493 63.5226 81.829 64.3429C81.0087 65.1632 81.0087 66.4931 81.829 67.3134L93.8919 79.3763C94.7122 80.1965 96.0421 80.1965 96.8624 79.3763C97.6826 78.556 97.6826 77.226 96.8624 76.4058L84.7995 64.3429Z" fill="#2883FF"/>
+</g>
+<defs>
+<filter id="fn0" x="0.747049" y="10.661" width="121.361" height="114.193" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="6.49057" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="6.49057"/><feGaussianBlur stdDeviation="4.86793"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="4.86793" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="16.2264"/><feGaussianBlur stdDeviation="12.1698"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+<filter id="fn1" x="-0.00167179" y="0.0837088" width="82.9291" height="92.144" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="12.2857" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="12.2857"/><feGaussianBlur stdDeviation="9.21429"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="9.21429" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="30.7143"/><feGaussianBlur stdDeviation="23.0357"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+<filter id="fn2" x="39.9241" y="0.0837088" width="82.9291" height="92.144" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="12.2857" operator="erode" in="SourceAlpha" result="e1"/><feOffset dy="12.2857"/><feGaussianBlur stdDeviation="9.21429"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="s1"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feMorphology radius="9.21429" operator="erode" in="SourceAlpha" result="e2"/><feOffset dy="30.7143"/><feGaussianBlur stdDeviation="23.0357"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/><feBlend mode="normal" in2="s1" result="s2"/><feBlend mode="normal" in="SourceGraphic" in2="s2" result="shape"/></filter>
+</defs>
+</svg>`
+};
+
+var confirmContent={
+  yes:{
+    title:"You're attending",
+    subtitle:"Add the event to your calendar so you don't forget to join.",
+    actions:'<button class="btn-cal">Add to Calendar</button><button class="btn-update" onclick="updateResponse()">Update Response</button>'
+  },
+  maybe:{
+    title:"You're marked as tentative",
+    subtitle:"We hope to see you there. If your plans change, update your response below.",
+    actions:'<button class="btn-cal">Add to Calendar</button><button class="btn-update" onclick="updateResponse()">Update Response</button>'
+  },
+  no:{
+    title:"You're not attending",
+    subtitle:"If your plans change, update your response below.",
+    actions:'<button class="btn-update" onclick="updateResponse()">Update Response</button>'
+  }
+};
+
+function goRSVP(){document.getElementById('s-outlook').classList.remove('active');document.getElementById('s-rsvp').classList.add('active');window.scrollTo(0,0);}
+function pick(val){chosen=val;['yes','maybe','no'].forEach(function(o){var el=document.getElementById('opt-'+o);el.classList.toggle('selected',o===val);});document.getElementById('submit-btn').disabled=false;}
+function submitRSVP(){
+  var f=document.getElementById('rsvp-form');
+  f.classList.add('out');
+  setTimeout(function(){
+    f.style.display='none';
+    var c=confirmContent[chosen];
+    document.getElementById('conf-icon-wrap').innerHTML=icons[chosen];
+    document.getElementById('confirm-title').textContent=c.title;
+    document.getElementById('confirm-subtitle').textContent=c.subtitle;
+    document.getElementById('confirm-actions').innerHTML=c.actions;
+    var cs=document.getElementById('confirm-state');
+    cs.style.display='block';
+    cs.classList.add('anim-run');
+  },230);
+}
+function updateResponse(){
+  var cs=document.getElementById('confirm-state');
+  cs.style.display='none';
+  cs.classList.remove('anim-run');
+  document.getElementById('conf-icon-wrap').innerHTML='';
+  var f=document.getElementById('rsvp-form');
+  f.style.display='';
+  f.classList.remove('out');
+}
+function resetForm(){
+  chosen=null;
+  var f=document.getElementById('rsvp-form');
+  f.classList.remove('out');f.style.display='';
+  var cs=document.getElementById('confirm-state');
+  cs.style.display='none';cs.classList.remove('anim-run');
+  document.getElementById('submit-btn').disabled=true;
+  ['yes','maybe','no'].forEach(function(o){document.getElementById('opt-'+o).classList.remove('selected');});
+}
+function loadEmailImg(input){
+  if(!input.files||!input.files[0])return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var img=document.getElementById('email-img');
+    img.src=e.target.result;
+    document.getElementById('email-placeholder').style.display='none';
+    document.getElementById('email-img-wrap').style.display='block';
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+</script>
+</body>
+</html>
